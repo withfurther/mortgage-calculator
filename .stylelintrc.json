@@ -1,0 +1,16 @@
+{
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-tailwindcss"
+    ],
+    "plugins": ["stylelint-prettier"],
+    "rules": {
+      "prettier/prettier": true,
+      "color-hex-length": "short",
+      "alpha-value-notation": "number",
+      "value-keyword-case": "lower",
+      "declaration-empty-line-before": null,
+      "rule-empty-line-before": null,
+      "color-function-notation": "modern"
+    }
+  }
