@@ -1,0 +1,30 @@
+export interface ScheduleRow {
+    year: number;
+    fromMonth: number;
+    toMonth: number;
+    beginningBalance: number;
+    payment: number;
+    interestPayment: number;
+    principalPayment: number;
+    endingBalance: number;
+    beginningHomeValue: number;
+    endingHomeValue: number;
+    beginningEquity: number;
+    endingEquity: number;
+    equityGrowth: number;
+    cumulativeEquityGrowth: number;
+    ltv: number;
+    salesProceeds?: number;
+    sellingCosts?: number;
+    loanPayoff?: number;
+    netSalesProceeds?: number;
+    monthlyIncome: number;
+    monthlyLoanPayments: number;
+    pmiPayment: number;
+    assessedValue: number;
+    propertyTax: number;
+    propertyInsurance: number;
+    maintenance: number;
+    hoaFees: number;
+    totalHousingPayment: number;
+  }
