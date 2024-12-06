@@ -98,7 +98,6 @@ const Calculator: React.FC = () => {
         setHoaFees={setHoaFees}
         assessedValuePercent={assessedValuePercent}
         setAssessedValuePercent={setAssessedValuePercent}
-        formatCurrency={formatCurrency}
       />
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"

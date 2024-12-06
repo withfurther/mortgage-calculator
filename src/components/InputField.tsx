@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface InputFieldProps {
   label: string;
@@ -7,6 +7,7 @@ interface InputFieldProps {
   type?: string;
   step?: number;
   isPercentage?: boolean;
+  isCurrency?: boolean;
   allowNegative?: boolean;
 }
 
@@ -17,51 +18,48 @@ const InputField: React.FC<InputFieldProps> = ({
   type = "text",
   step,
   isPercentage = false,
+  isCurrency = false,
   allowNegative = false,
 }) => {
-  const [inputValue, setInputValue] = useState(value);
+  const [localValue, setLocalValue] = useState(value);
+
+  useEffect(() => {
+    setLocalValue(value);
+  }, [value]);
 
   const handleBlur = () => {
-    let formattedValue = inputValue;
-
-    if (isPercentage) {
-      const numericValue = parseFloat(formattedValue.replace(/[^0-9.-]/g, ""));
-      if (!isNaN(numericValue)) {
-        formattedValue = `${numericValue.toFixed(2)}%`;
-      } else {
-        formattedValue = "";
-      }
+    let formattedValue = localValue;
+    if (isCurrency) {
+      formattedValue = `$${parseFloat(localValue.replace(/[^0-9.-]/g, "")).toLocaleString(undefined, {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      })}`;
+    } else if (isPercentage) {
+      const parsedValue = parseFloat(localValue.replace(/[^0-9.-]/g, ""));
+      formattedValue = `${parsedValue.toFixed(2)}%`;
     }
-
-    setInputValue(formattedValue);
-    onChange(formattedValue.replace("%", ""));
+    setLocalValue(formattedValue);
+    onChange(formattedValue);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let newValue = e.target.value;
-
-    if (allowNegative) {
-      newValue = newValue.replace(/[^0-9.-]/g, "");
-    } else {
-      newValue = newValue.replace(/[^0-9.]/g, "");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let inputValue = e.target.value;
+    if (isPercentage || isCurrency) {
+      if (inputValue === ".") inputValue = "0.";
     }
-
-    if (newValue.startsWith(".")) {
-      newValue = "0" + newValue;
+    if (allowNegative || /^[0-9.-]*$/.test(inputValue)) {
+      setLocalValue(inputValue);
     }
-
-    setInputValue(newValue);
-    onChange(newValue.replace("%", ""));
   };
 
   return (
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-1">{label}</label>
+    <div className="flex flex-col">
+      <label className="text-sm font-medium mb-1">{label}</label>
       <input
+        className="border rounded px-2 py-1"
         type={type}
-        className="w-full border rounded p-2"
-        value={inputValue}
-        onChange={handleInputChange}
+        value={localValue}
+        onChange={handleChange}
         onBlur={handleBlur}
         step={step}
       />

@@ -61,7 +61,6 @@ interface CalculatorInputsProps {
   setHoaFees: (value: number) => void;
   assessedValuePercent: number;
   setAssessedValuePercent: (value: number) => void;
-  formatCurrency?: (value: number) => string;
 }
 
 const CalculatorInputs: React.FC<CalculatorInputsProps> = ({
@@ -103,29 +102,22 @@ const CalculatorInputs: React.FC<CalculatorInputsProps> = ({
   setHoaFees,
   assessedValuePercent,
   setAssessedValuePercent,
-
 }) => {
-    const formatCurrency = (value: number) =>
-        `$${value.toLocaleString(undefined, {
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 0,
-        })}`;
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <InputField
         label="Loan Amount"
-        value={formatCurrency(principal)}
+        value={principal.toString()}
         onChange={(value) =>
           setPrincipal(parseFloat(value.replace(/[$,]/g, "")) || 0)
         }
+        isCurrency
       />
       <InputField
         label="Interest Rate (%)"
         value={rate.toString()}
-        onChange={(value) => setRate(parseFloat(value))}
-        type="number"
-        step={0.01}
+        onChange={(value) => setRate(parseFloat(value.replace(/%/g, "")) || 0)}
+        isPercentage
       />
       <InputField
         label="Loan Term (Years)"
@@ -135,82 +127,87 @@ const CalculatorInputs: React.FC<CalculatorInputsProps> = ({
       />
       <InputField
         label="Home Value"
-        value={formatCurrency(homeValue)}
+        value={homeValue.toString()}
         onChange={(value) =>
           setHomeValue(parseFloat(value.replace(/[$,]/g, "")) || 0)
         }
+        isCurrency
       />
       <InputField
-  label="Annual Home Value Increase (%)"
-  value={annualIncrease.toString()}
-  onChange={(value) => setAnnualIncrease(parseFloat(value))}
-  type="text"
-  step={0.01}
-  isPercentage
-  allowNegative
-/>
-<InputField
-  label="PMI Rate (%)"
-  value={pmiRate.toString()}
-  onChange={(value) => setPmiRate(parseFloat(value))}
-  type="text"
-  step={0.01}
-  isPercentage
-/>
-<InputField
-  label="Property Insurance Rate (%)"
-  value={propertyInsuranceRate.toString()}
-  onChange={(value) => setPropertyInsuranceRate(parseFloat(value))}
-  type="text"
-  step={0.01}
-  isPercentage
-/>
+        label="Annual Home Value Increase (%)"
+        value={annualIncrease.toString()}
+        onChange={(value) => setAnnualIncrease(parseFloat(value))}
+        type="text"
+        step={0.01}
+        isPercentage
+        allowNegative
+      />
+      <InputField
+        label="PMI Rate (%)"
+        value={pmiRate.toString()}
+        onChange={(value) => setPmiRate(parseFloat(value))}
+        type="text"
+        step={0.01}
+        isPercentage
+      />
+      <InputField
+        label="Property Insurance Rate (%)"
+        value={propertyInsuranceRate.toString()}
+        onChange={(value) => setPropertyInsuranceRate(parseFloat(value))}
+        type="text"
+        step={0.01}
+        isPercentage
+      />
       <InputField
         label="Monthly Maintenance Expenses ($)"
-        value={formatCurrency(maintenanceExpenses)}
+        value={maintenanceExpenses.toString()}
         onChange={(value) =>
           setMaintenanceExpenses(parseFloat(value.replace(/[$,]/g, "")) || 0)
         }
+        isCurrency
       />
       <InputField
         label="Monthly HOA Fees ($)"
-        value={formatCurrency(hoaFees)}
+        value={hoaFees.toString()}
         onChange={(value) =>
           setHoaFees(parseFloat(value.replace(/[$,]/g, "")) || 0)
         }
+        isCurrency
       />
       <InputField
         label="Annual Household Income"
-        value={formatCurrency(income)}
+        value={income.toString()}
         onChange={(value) =>
           setIncome(parseFloat(value.replace(/[$,]/g, "")) || 0)
         }
+        isCurrency
       />
-<InputField
-  label="Annual Income Growth (%)"
-  value={incomeGrowth.toString()}
-  onChange={(value) => setIncomeGrowth(parseFloat(value))}
-  type="text"
-  step={0.01}
-  isPercentage
-  allowNegative
-/>
+      <InputField
+        label="Annual Income Growth (%)"
+        value={incomeGrowth.toString()}
+        onChange={(value) => setIncomeGrowth(parseFloat(value))}
+        type="text"
+        step={0.01}
+        isPercentage
+        allowNegative
+      />
       <InputField
         label="Monthly Loan Payments"
-        value={formatCurrency(loanPayments)}
+        value={loanPayments.toString()}
         onChange={(value) =>
           setLoanPayments(parseFloat(value.replace(/[$,]/g, "")) || 0)
         }
+        isCurrency
       />
-<InputField
-  label="Annual Loan Payment Change (%)"
-  value={loanPaymentChange.toString()}
-  onChange={(value) => setLoanPaymentChange(parseFloat(value))}
-  type="text"
-  step={0.01}
-  isPercentage
-  allowNegative
-/>
+      <InputField
+        label="Annual Loan Payment Change (%)"
+        value={loanPaymentChange.toString()}
+        onChange={(value) => setLoanPaymentChange(parseFloat(value))}
+        type="text"
+        step={0.01}
+        isPercentage
+        allowNegative
+      />
       <InputField
         label="How Long Will You Own This Home (Years)"
         value={ownershipYears.toString()}
@@ -220,9 +217,10 @@ const CalculatorInputs: React.FC<CalculatorInputsProps> = ({
       <InputField
         label="Selling Costs (%)"
         value={sellingCostsPercent.toString()}
-        onChange={(value) => setSellingCostsPercent(parseFloat(value))}
-        type="number"
-        step={0.01}
+        onChange={(value) =>
+          setSellingCostsPercent(parseFloat(value.replace(/%/g, "")) || 0)
+        }
+        isPercentage
       />
       <SelectField
         label="State"
@@ -239,18 +237,19 @@ const CalculatorInputs: React.FC<CalculatorInputsProps> = ({
       <InputField
         label="Assessed Value (% of Market Value)"
         value={assessedValuePercent.toString()}
-        onChange={(value) => setAssessedValuePercent(parseFloat(value) || 0)}
-        type="number"
-        step={0.01}
+        onChange={(value) =>
+          setAssessedValuePercent(parseFloat(value.replace(/%/g, "")) || 0)
+        }
+        isPercentage
       />
-<InputField
-  label="Property Tax Rate (%)"
-  value={propertyTaxRate.toString()}
-  onChange={(value) => setPropertyTaxRate(parseFloat(value))}
-  type="text"
-  step={0.01}
-  isPercentage
-/>
+      <InputField
+        label="Property Tax Rate (%)"
+        value={propertyTaxRate.toString()}
+        onChange={(value) => setPropertyTaxRate(parseFloat(value))}
+        type="text"
+        step={0.01}
+        isPercentage
+      />
     </div>
   );
 };
