@@ -24,6 +24,7 @@ const Calculator: React.FC = () => {
   const [maintenanceExpenses, setMaintenanceExpenses] = useState(0);
   const [hoaFees, setHoaFees] = useState(0);
   const [assessedValuePercent, setAssessedValuePercent] = useState<number>(0);
+  const [incomeTaxRate, setIncomeTaxRate] = useState(0); // New state for income tax rate
   const [schedule, setSchedule] = useState<ScheduleRow[]>([]);
 
   const formatCurrency = (value: number) =>
@@ -51,6 +52,7 @@ const Calculator: React.FC = () => {
       maintenanceExpenses,
       hoaFees,
       assessedValuePercent,
+      incomeTaxRate, // Pass the new state here
     });
 
     setSchedule(newSchedule);
@@ -98,6 +100,8 @@ const Calculator: React.FC = () => {
         setHoaFees={setHoaFees}
         assessedValuePercent={assessedValuePercent}
         setAssessedValuePercent={setAssessedValuePercent}
+        incomeTaxRate={incomeTaxRate} // Pass income tax rate to CalculatorInputs
+        setIncomeTaxRate={setIncomeTaxRate} // Add setter for income tax rate
       />
       <button
         className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"

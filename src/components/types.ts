@@ -27,4 +27,7 @@ export interface ScheduleRow {
     maintenance: number;
     hoaFees: number;
     totalHousingPayment: number;
+    taxDeduction?: number;
+    taxBenefit?: number;
+    monthlyTaxBenefit?: number;
   }

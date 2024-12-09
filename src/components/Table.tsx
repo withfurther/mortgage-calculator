@@ -25,6 +25,9 @@ const Table: React.FC<TableProps> = ({ schedule, formatCurrency }) => (
           <th className="border px-4 py-2" colSpan={10}>
             Mortgage and Home Value
           </th>
+          <th className="border px-4 py-2" colSpan={3}>
+            Tax Implications
+            </th>
           <th className="border px-4 py-2" colSpan={4}>
             Sales Details
           </th>
@@ -62,6 +65,10 @@ const Table: React.FC<TableProps> = ({ schedule, formatCurrency }) => (
           <th className="border px-4 py-2">Ending Equity</th>
           <th className="border px-4 py-2">Equity Growth</th>
           <th className="border px-4 py-2">Cumulative Equity Growth</th>
+          {/* Tax Group */}
+          <th className="border px-4 py-2">Tax Deduction</th>
+          <th className="border px-4 py-2">Tax Benefit</th>
+          <th className="border px-4 py-2">Monthly Tax Benefit</th>
           {/* Sales Group */}
           <th className="border px-4 py-2">Sales Proceeds</th>
           <th className="border px-4 py-2">Selling Costs</th>
@@ -82,30 +89,26 @@ const Table: React.FC<TableProps> = ({ schedule, formatCurrency }) => (
             <td className="border px-4 py-2">{formatCurrency(row.principalPayment)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.pmiPayment || 0)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.propertyTax || 0)}</td>
-            <td className="border px-4 py-2">{formatCurrency(row.propertyInsurance)}</td>
-            <td className="border px-4 py-2">{formatCurrency(row.hoaFees)}</td>
+            <td className="border px-4 py-2">{formatCurrency(row.propertyInsurance || 0)}</td>
+            <td className="border px-4 py-2">{formatCurrency(row.hoaFees || 0)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.totalHousingPayment)}</td>
             {/* DTI and Income Group */}
             <td className="border px-4 py-2">{formatCurrency(row.monthlyIncome)}</td>
             <td className="border px-4 py-2">
-              {(row.totalHousingPayment / row.monthlyIncome * 100).toFixed(2)}%
+              {((row.totalHousingPayment / row.monthlyIncome) * 100).toFixed(2)}%
             </td>
             <td className="border px-4 py-2">{formatCurrency(row.monthlyLoanPayments)}</td>
             <td className="border px-4 py-2">
-              {(row.monthlyLoanPayments / row.monthlyIncome * 100).toFixed(2)}%
+              {((row.monthlyLoanPayments / row.monthlyIncome) * 100).toFixed(2)}%
             </td>
             <td className="border px-4 py-2">
-              {(
-                ((row.totalHousingPayment + row.monthlyLoanPayments) /
-                  row.monthlyIncome) *
-                100
-              ).toFixed(2)}%
+              {(((row.totalHousingPayment + row.monthlyLoanPayments) / row.monthlyIncome) * 100).toFixed(2)}%
             </td>
             <td className="border px-4 py-2">{formatCurrency(row.maintenance)}</td>
             {/* Mortgage and Home Value Group */}
             <td className="border px-4 py-2">{formatCurrency(row.beginningBalance)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.endingBalance)}</td>
-            <td className="border px-4 py-2">{row.ltv.toFixed(2)}%</td>
+            <td className="border px-4 py-2">{row.ltv?.toFixed(2)}%</td>
             <td className="border px-4 py-2">{formatCurrency(row.beginningHomeValue)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.endingHomeValue)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.assessedValue || 0)}</td>
@@ -113,6 +116,10 @@ const Table: React.FC<TableProps> = ({ schedule, formatCurrency }) => (
             <td className="border px-4 py-2">{formatCurrency(row.endingEquity)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.equityGrowth)}</td>
             <td className="border px-4 py-2">{formatCurrency(row.cumulativeEquityGrowth)}</td>
+            {/* Tax Group */}
+            <td className="border px-4 py-2">{formatCurrency(row.taxDeduction || 0)}</td>
+            <td className="border px-4 py-2">{formatCurrency(row.taxBenefit || 0)}</td>
+            <td className="border px-4 py-2">{formatCurrency(row.monthlyTaxBenefit || 0)}</td>
             {/* Sales Group */}
             <td className="border px-4 py-2">
               {row.salesProceeds ? formatCurrency(row.salesProceeds) : "-"}
